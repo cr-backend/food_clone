@@ -16,11 +16,19 @@ repositories {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("com.h2database:h2")
-	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	//	db
+	implementation("org.springframework.boot:spring-boot-starter-jdbc") // Jdbc, Driver
+	runtimeOnly("com.mysql:mysql-connector-j")
+	runtimeOnly("com.h2database:h2")
+	implementation("com.h2database:h2")
+
+	// lombok
+	implementation("org.projectlombok:lombok")
 }
 
 tasks.withType<Test> {
