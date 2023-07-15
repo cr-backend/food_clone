@@ -19,6 +19,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 	//	db
@@ -29,6 +30,12 @@ dependencies {
 
 	// lombok
 	implementation("org.projectlombok:lombok")
+
+	// jwt
+	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
 }
 
 tasks.withType<Test> {
