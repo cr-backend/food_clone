@@ -1,17 +1,15 @@
 package kr.co.cr.food.login.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import kr.co.cr.food.exception.InternalServerErrorException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -19,12 +17,12 @@ public class JwtTokenProvider {
 
     private final Key key;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secret){
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generate(String sub, Date expriedAt){
+    public String generate(String sub, Date expriedAt) {
         return Jwts.builder()
                 .setSubject(sub)
                 .setExpiration(expriedAt)
@@ -32,20 +30,20 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractSub(String accessToken){
+    public String extractSub(String accessToken) {
         Claims claims = parseClaims(accessToken);
         return claims.getSubject();
     }
 
     private Claims parseClaims(String accessToken) {
-        try{
+        try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
-        }catch (ExpiredJwtException e){
-            throw new RuntimeException("token error");
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Jwt Token이 발생되지 않습니다.");
         }
     }
 

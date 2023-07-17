@@ -1,5 +1,6 @@
 package kr.co.cr.food.login.config;
 
+import kr.co.cr.food.exception.HttpClientErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -29,7 +30,7 @@ public class KakaoApiClient {
 
     private final RestTemplate restTemplate;
 
-    public String requestAccessToken(OauthRequestParam params){
+    public String requestAccessToken(OauthRequestParam params) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -41,13 +42,18 @@ public class KakaoApiClient {
 
         HttpEntity request = new HttpEntity(body, httpHeaders);
 
+        if (request == null)
+            throw new HttpClientErrorException("Kakao 토큰을 요청할 수 없습니다.");
+
         OauthTokens response = restTemplate.postForObject(tokenUrl, request, OauthTokens.class);
 
-        assert response != null;
+        if (response == null)
+            throw new HttpClientErrorException("Kakao 토큰을 발급 받을 수 없습니다.");
+
         return response.getAccessToken();
     }
 
-    public OauthInfoResponse requestOauthInfo(String accessToken){
+    public OauthInfoResponse requestOauthInfo(String accessToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         httpHeaders.set("Authorization", "Bearer " + accessToken);
@@ -57,9 +63,11 @@ public class KakaoApiClient {
 
         HttpEntity request = new HttpEntity(body, httpHeaders);
 
+        if (request == null)
+            throw new HttpClientErrorException("사용자 정보를 Kakao Auth Server로부터 요청할 수 없습니다.");
+
         return restTemplate.postForObject(userInfoUrl, request, OauthInfoResponse.class);
     }
-
 
 
 }

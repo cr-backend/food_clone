@@ -1,6 +1,7 @@
 package kr.co.cr.food.login;
 
 import kr.co.cr.food.entity.Member;
+import kr.co.cr.food.exception.InternalServerErrorException;
 import kr.co.cr.food.login.config.KakaoApiClient;
 import kr.co.cr.food.login.config.OauthInfoResponse;
 import kr.co.cr.food.login.config.OauthRequestParam;
@@ -36,6 +37,12 @@ public class AuthService {
                 .email(response.getEmail())
                 .nickname(response.getNickname())
                 .build();
+
+        Long savedId = memberRepository.save(member).getId();
+
+        if(savedId == null){
+            throw new InternalServerErrorException("회원 정보가 저장되지 않았습니다.");
+        }
 
         return memberRepository.save(member).getId();
     }
