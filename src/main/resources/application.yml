@@ -25,6 +25,9 @@ spring:
       ddl-auto: create
       dialect: org.hibernate.dialect.H2Dialect
     database: h2
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 # Kakao Login
 oauth2:
