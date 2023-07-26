@@ -30,6 +30,8 @@ dependencies {
 
 	// lombok
 	implementation("org.projectlombok:lombok")
+	compileOnly("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
 
 	// swagger
 	implementation("io.springfox:springfox-boot-starter:3.0.0")
