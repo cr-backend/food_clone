@@ -29,6 +29,10 @@ dependencies {
 
 	// lombok
 	implementation("org.projectlombok:lombok")
+
+	// swagger
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 }
 
 tasks.withType<Test> {
