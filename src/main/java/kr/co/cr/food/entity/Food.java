@@ -18,9 +18,10 @@ public class Food {
     private String name;
     @Column(name = "serving_size")
     private Double servingSize;
-    private Double kcal;
-    private Double carbs;
-    private Double protein;
+    private String unit; // g/ ml
+    private Double kcal; // 500 g
+    private Double carbs; // 0.3 g
+    private Double protein; // 0.1 g
     private Double fat;
     private Double sugar;
     private Double nat;
