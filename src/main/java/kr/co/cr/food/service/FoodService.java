@@ -11,17 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FoodService implements FoodService {
+public class FoodService {
 
   @Autowired
   FoodRepository foodRepository;
 
-  @Override
   public List<SearchFoodRes> searchFoods(SearchFoodReq searchFoodReq) {
     return null;
   }
 
-  @Override
   public FoodDetailRes getFoodDetail(Long id) {
     Food food = foodRepository.findById(id).orElseThrow();
     return FoodDetailRes.builder()
