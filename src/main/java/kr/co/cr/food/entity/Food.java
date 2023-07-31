@@ -1,7 +1,6 @@
 package kr.co.cr.food.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +9,9 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Food {
     @Id
     private Long id;
@@ -18,9 +20,10 @@ public class Food {
     private String name;
     @Column(name = "serving_size")
     private Double servingSize;
-    private Double kcal;
-    private Double carbs;
-    private Double protein;
+    private String unit; // g/ ml
+    private Double kcal; // 500 g
+    private Double carbs; // 0.3 g
+    private Double protein; // 0.1 g
     private Double fat;
     private Double sugar;
     private Double nat;
