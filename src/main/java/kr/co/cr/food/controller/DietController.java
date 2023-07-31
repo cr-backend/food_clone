@@ -1,7 +1,9 @@
-package kr.co.cr.food.diet;
+package kr.co.cr.food.controller;
 
-import kr.co.cr.food.diet.dto.CreateDietRequest;
-import kr.co.cr.food.diet.dto.UpdateDietRequest;
+import kr.co.cr.food.common.ApiResponse;
+import kr.co.cr.food.service.DietService;
+import kr.co.cr.food.dto.diet.CreateDietRequest;
+import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

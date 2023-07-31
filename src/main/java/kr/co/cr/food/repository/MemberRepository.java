@@ -1,4 +1,4 @@
-package kr.co.cr.food.login;
+package kr.co.cr.food.repository;
 
 import kr.co.cr.food.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

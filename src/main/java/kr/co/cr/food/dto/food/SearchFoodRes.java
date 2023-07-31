@@ -1,4 +1,4 @@
-package kr.co.cr.food.dto;
+package kr.co.cr.food.dto.food;
 
 import kr.co.cr.food.enums.RecordType;
 import lombok.Data;

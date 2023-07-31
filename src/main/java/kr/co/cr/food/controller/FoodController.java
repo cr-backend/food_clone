@@ -3,7 +3,7 @@ package kr.co.cr.food.controller;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.cr.food.common.BaseController;
-import kr.co.cr.food.dto.FoodDetailRes;
+import kr.co.cr.food.dto.food.FoodDetailRes;
 import kr.co.cr.food.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

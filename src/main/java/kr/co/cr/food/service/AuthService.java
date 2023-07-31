@@ -1,12 +1,13 @@
-package kr.co.cr.food.login;
+package kr.co.cr.food.service;
 
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.exception.InternalServerErrorException;
-import kr.co.cr.food.login.config.KakaoApiClient;
-import kr.co.cr.food.login.config.OauthInfoResponse;
-import kr.co.cr.food.login.config.OauthRequestParam;
-import kr.co.cr.food.login.jwt.AuthTokens;
-import kr.co.cr.food.login.jwt.AuthTokensGenerator;
+import kr.co.cr.food.repository.MemberRepository;
+import kr.co.cr.food.utils.KakaoApiClient;
+import kr.co.cr.food.dto.auth.OauthInfoResponse;
+import kr.co.cr.food.utils.OauthRequestParam;
+import kr.co.cr.food.dto.auth.AuthTokens;
+import kr.co.cr.food.utils.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

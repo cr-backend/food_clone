@@ -1,4 +1,4 @@
-package kr.co.cr.food.login.config;
+package kr.co.cr.food.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package kr.co.cr.food.diet.dto;
+package kr.co.cr.food.dto.diet;
 
 import kr.co.cr.food.entity.Diet;
 import kr.co.cr.food.entity.Food;

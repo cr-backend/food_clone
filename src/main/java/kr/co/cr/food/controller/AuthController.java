@@ -1,7 +1,8 @@
-package kr.co.cr.food.login;
+package kr.co.cr.food.controller;
 
-import kr.co.cr.food.login.config.OauthRequestParam;
-import kr.co.cr.food.login.jwt.AuthTokens;
+import kr.co.cr.food.service.AuthService;
+import kr.co.cr.food.utils.OauthRequestParam;
+import kr.co.cr.food.dto.auth.AuthTokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

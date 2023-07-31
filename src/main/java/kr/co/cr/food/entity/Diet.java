@@ -1,6 +1,5 @@
 package kr.co.cr.food.entity;
 
-import kr.co.cr.food.diet.dto.UpdateDietRequest;
 import lombok.*;
 
 import javax.persistence.*;

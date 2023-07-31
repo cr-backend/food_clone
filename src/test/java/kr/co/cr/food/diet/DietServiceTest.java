@@ -1,11 +1,13 @@
 package kr.co.cr.food.diet;
 
-import kr.co.cr.food.diet.dto.CreateDietRequest;
-import kr.co.cr.food.diet.dto.UpdateDietRequest;
+import kr.co.cr.food.dto.diet.CreateDietRequest;
+import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.entity.Food;
 import kr.co.cr.food.entity.MealTime;
 import kr.co.cr.food.entity.Member;
-import kr.co.cr.food.login.MemberRepository;
+import kr.co.cr.food.repository.MemberRepository;
+import kr.co.cr.food.repository.FoodRepository;
+import kr.co.cr.food.service.DietService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

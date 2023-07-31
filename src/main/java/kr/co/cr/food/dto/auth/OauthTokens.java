@@ -1,4 +1,4 @@
-package kr.co.cr.food.login.config;
+package kr.co.cr.food.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package kr.co.cr.food.dto;
+package kr.co.cr.food.dto.food;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

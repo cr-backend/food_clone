@@ -1,12 +1,36 @@
 package kr.co.cr.food.service;
 
-import kr.co.cr.food.dto.FoodDetailRes;
-import kr.co.cr.food.dto.SearchFoodReq;
-import kr.co.cr.food.dto.SearchFoodRes;
+import kr.co.cr.food.dto.food.FoodDetailRes;
+import kr.co.cr.food.dto.food.SearchFoodReq;
+import kr.co.cr.food.dto.food.SearchFoodRes;
+import kr.co.cr.food.entity.Food;
+import kr.co.cr.food.repository.FoodRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface FoodService {
-  List<SearchFoodRes> searchFoods(SearchFoodReq searchFoodReq);
-  FoodDetailRes getFoodDetail(Long id);
+@Service
+public class FoodService implements FoodService {
+
+  @Autowired
+  FoodRepository foodRepository;
+
+  @Override
+  public List<SearchFoodRes> searchFoods(SearchFoodReq searchFoodReq) {
+    return null;
+  }
+
+  @Override
+  public FoodDetailRes getFoodDetail(Long id) {
+    Food food = foodRepository.findById(id).orElseThrow();
+    return FoodDetailRes.builder()
+          .protein(food.getProtein())
+          .carb(food.getCarbs())
+          .fat(food.getFat())
+          .kcal(food.getKcal())
+          .servingSize(food.getServingSize())
+          .unit(food.getUnit())
+          .build();
+  }
 }

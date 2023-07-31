@@ -1,9 +1,10 @@
-package kr.co.cr.food.diet;
+package kr.co.cr.food.service;
 
-import kr.co.cr.food.diet.dto.CreateDietRequest;
-import kr.co.cr.food.diet.dto.UpdateDietRequest;
+import kr.co.cr.food.dto.diet.CreateDietRequest;
+import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.entity.Diet;
 import kr.co.cr.food.exception.InternalServerErrorException;
+import kr.co.cr.food.repository.DietRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -6,7 +6,7 @@ public abstract class BaseController {
     protected ApiResponse ok(Object data) {
         return ApiResponse.builder()
             .result("OK")
-            .message(SUCCESS_MESSAGE)
+            .msg(SUCCESS_MESSAGE)
             .data(data)
             .build();
     }
@@ -14,7 +14,7 @@ public abstract class BaseController {
     protected ApiResponse fail(String message) {
         return ApiResponse.builder()
             .result("FAIL")
-            .message(message)
+            .msg(message)
             .build();
     }
 }

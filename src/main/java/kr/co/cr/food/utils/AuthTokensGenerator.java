@@ -1,5 +1,6 @@
-package kr.co.cr.food.login.jwt;
+package kr.co.cr.food.utils;
 
+import kr.co.cr.food.dto.auth.AuthTokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

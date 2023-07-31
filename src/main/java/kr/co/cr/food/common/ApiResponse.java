@@ -1,15 +1,15 @@
 package kr.co.cr.food.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@ToString
 public class ApiResponse {
     private String result;
-    private String message;
+    private String msg;
     private Object data;
 
 }

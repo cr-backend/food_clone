@@ -1,5 +1,7 @@
-package kr.co.cr.food.login.config;
+package kr.co.cr.food.utils;
 
+import kr.co.cr.food.dto.auth.OauthInfoResponse;
+import kr.co.cr.food.dto.auth.OauthTokens;
 import kr.co.cr.food.exception.HttpClientErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

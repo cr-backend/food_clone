@@ -1,4 +1,4 @@
-package kr.co.cr.food.login.config;
+package kr.co.cr.food.utils;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

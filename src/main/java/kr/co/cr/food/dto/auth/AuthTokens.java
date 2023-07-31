@@ -1,4 +1,4 @@
-package kr.co.cr.food.login.jwt;
+package kr.co.cr.food.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

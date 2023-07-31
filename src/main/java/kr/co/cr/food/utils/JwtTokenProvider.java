@@ -1,4 +1,4 @@
-package kr.co.cr.food.login.jwt;
+package kr.co.cr.food.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
