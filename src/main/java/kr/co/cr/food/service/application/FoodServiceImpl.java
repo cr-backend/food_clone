@@ -1,4 +1,4 @@
-package kr.co.cr.food.service.impl;
+package kr.co.cr.food.service.application;
 
 import kr.co.cr.food.dto.FoodDetailRes;
 import kr.co.cr.food.dto.SearchFoodReq;
