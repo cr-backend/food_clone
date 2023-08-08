@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FoodService {
@@ -17,7 +18,10 @@ public class FoodService {
   FoodRepository foodRepository;
 
   public List<SearchFoodRes> searchFoods(SearchFoodReq searchFoodReq) {
-    return null;
+    List<Food> foodList = foodRepository.findAll();
+    return foodList.stream()
+          .map(SearchFoodRes::toDto)
+          .collect(Collectors.toList());
   }
 
   public FoodDetailRes getFoodDetail(Long id) {

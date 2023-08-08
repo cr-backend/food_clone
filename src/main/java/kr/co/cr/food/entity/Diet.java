@@ -1,5 +1,6 @@
 package kr.co.cr.food.entity;
 
+import kr.co.cr.food.enums.MealTime;
 import lombok.*;
 
 import javax.persistence.*;

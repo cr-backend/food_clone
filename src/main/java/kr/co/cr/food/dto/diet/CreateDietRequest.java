@@ -2,7 +2,7 @@ package kr.co.cr.food.dto.diet;
 
 import kr.co.cr.food.entity.Diet;
 import kr.co.cr.food.entity.Food;
-import kr.co.cr.food.entity.MealTime;
+import kr.co.cr.food.enums.MealTime;
 import kr.co.cr.food.entity.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;

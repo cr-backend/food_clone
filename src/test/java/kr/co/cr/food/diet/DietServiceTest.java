@@ -3,7 +3,7 @@ package kr.co.cr.food.diet;
 import kr.co.cr.food.dto.diet.CreateDietRequest;
 import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.entity.Food;
-import kr.co.cr.food.entity.MealTime;
+import kr.co.cr.food.enums.MealTime;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.repository.FoodRepository;
