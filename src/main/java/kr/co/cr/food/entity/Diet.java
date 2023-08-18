@@ -1,5 +1,7 @@
 package kr.co.cr.food.entity;
 
+import kr.co.cr.food.enums.MealTime;
+import kr.co.cr.food.enums.RecordType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +33,19 @@ public class Diet {
     @Enumerated(EnumType.STRING)
     private MealTime mealTime;
 
+    @Column(name = "total_kcal")
+    private Long totalKcal;
+
+    @Column(name = "total_carb")
+    private Long totalCarb;
+
+    @Column(name = "total_pro")
+    private Long totalPro;
+
+    @Column(name = "total_fat")
+    private Long totalFat;
+
+
     // 양방향 편의 메서드
     public void changeMember(Member member){
         this.member = member;
@@ -45,4 +60,11 @@ public class Diet {
         this.dietDate = dietDate;
         this.mealTime = mealTime;
     }
+
+//    public void setTotal(){
+//        totalKcal *= count;
+//        totalCarb *= count;
+//        totalPro *= count;
+//        totalFat *= count;
+//    }
 }

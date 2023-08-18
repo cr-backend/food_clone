@@ -3,8 +3,8 @@ package kr.co.cr.food.diet;
 import kr.co.cr.food.dto.diet.CreateDietRequest;
 import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.entity.Food;
-import kr.co.cr.food.entity.MealTime;
 import kr.co.cr.food.entity.Member;
+import kr.co.cr.food.enums.RecordType;
 import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.repository.FoodRepository;
 import kr.co.cr.food.service.DietService;
@@ -38,7 +38,7 @@ class DietServiceTest {
         request.setFood(savedFood);
         request.setDietDate(LocalDateTime.now());
         request.setCount(1L);
-        request.setMealTime(MealTime.LUNCH);
+        request.setMealTime(RecordType.MealTime.LUNCH);
 
         service.inputDiet(request);
     }
@@ -51,7 +51,7 @@ class DietServiceTest {
         UpdateDietRequest request = new UpdateDietRequest();
         request.setFood(savedFood);
         request.setCount(5L);
-        request.setMealTime(MealTime.BREAKFAST);
+        request.setMealTime(RecordType.MealTime.BREAKFAST);
 
         service.updateDiet(2L,request);
     }

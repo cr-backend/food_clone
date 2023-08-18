@@ -4,5 +4,5 @@ public enum RecordType {
   OH,
   FH,
   OT,
-  FT
+  FT;
 }
