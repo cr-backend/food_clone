@@ -42,6 +42,10 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
 
+	// 쿼리 파라미터 로그 남기기
+	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0")
+
+
 }
 
 tasks.withType<Test> {

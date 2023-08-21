@@ -1,28 +1,28 @@
 # DB datasource
 spring:
   datasource:
-    url: jdbc:h2:~/food-app-db
+    url: jdbc:h2:tcp://localhost/~/food-app-db
     username: sa
     password:
     driver-class-name: org.h2.Driver
 
 # h2
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  sql:
-    init:
-      mode: always
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  sql:
+#    init:
+#      mode: always
 # JPA
 
   jpa:
     properties:
       hibernate:
-        show_sql: true
+#        show_sql: true
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       dialect: org.hibernate.dialect.H2Dialect
     database: h2
   mvc:
