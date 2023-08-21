@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 public class CreateDietRequest {
 
     @NotNull
-    private Food food;
+    private Long foodId;
 
     @NotNull
-    private Member member;
+    private Long memberId;
 
     @NotNull
     private Long count; // 몇 인분?
