@@ -15,10 +15,10 @@ import java.time.LocalDate;
 public class UpdateDietRequest {
 
     @NotNull
-    private Member member;
+    private Long memberId;
 
     @NotNull
-    private Food food;
+    private Long foodId;
 
     @NotNull
     private Long count; // 몇 인분?

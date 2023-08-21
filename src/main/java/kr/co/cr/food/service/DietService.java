@@ -59,10 +59,20 @@ public class DietService {
     }
 
     public void update(Long id, UpdateDietRequest request) {
+        // member 아이디 찾기
+        Member member = memberRepository.findById(request.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+
+        // food 아이디 찾기
+        Food food = foodRepository.findById(request.getFoodId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 음식을 찾을 수 없습니다."));
+
+        // 식단 찾기
         Diet diet = dietRepository.findById(id)
                 .orElseThrow(() ->
                         new NullPointerException("해당 식단 아이디를 찾을 수 없음"));
-        diet.updateDiet(request.getFood(), request.getMember(), request.getCount(), request.getDietDate(), request.getMealTime());
+
+        diet.updateDiet(food, member, request.getCount(), request.getDietDate(), request.getMealTime());
         diet.updateKcal();
     }
 
