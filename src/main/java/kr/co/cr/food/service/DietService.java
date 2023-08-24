@@ -22,7 +22,7 @@ public class DietService {
     private final MemberRepository memberRepository;
     private final FoodRepository foodRepository;
 
-    public boolean inputDiet(CreateDietRequest createDietRequest) {
+    public Long inputDiet(CreateDietRequest createDietRequest) {
         // member 아이디 찾기
         Member member = memberRepository.findById(createDietRequest.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
@@ -46,7 +46,7 @@ public class DietService {
         if (savedDiet == null)
             throw new InternalServerErrorException("식단을 저장할 수 없음");
 
-        return true;
+        return savedDiet.getId();
     }
 
 

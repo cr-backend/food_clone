@@ -36,8 +36,8 @@ public class DietController {
 
     @Operation(summary = "식단 수정", description = "사용자가 요청한 식단(음식)을 수정합니다.", tags = {"Diet Controller"})
     @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
-    @PatchMapping("/diet/{id}")
-    public ApiResponse modifiedDiet(@PathVariable("id") Long id,
+    @PatchMapping("/diet/{dietId}")
+    public ApiResponse modifiedDiet(@PathVariable("dietId") Long id,
                                     @RequestBody @Validated UpdateDietRequest updateDietRequest,
                                     BindingResult bindingResult) {
 
@@ -54,8 +54,8 @@ public class DietController {
 
     @Operation(summary = "식단 삭제", description = "사용자가 요청한 식단(음식)을 삭제합니다.", tags = {"Diet Controller"})
     @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
-    @DeleteMapping("/diet/{id}")
-    public ApiResponse removeDiet(@PathVariable("id") Long id) {
+    @DeleteMapping("/diet/{dietId}")
+    public ApiResponse removeDiet(@PathVariable("dietId") Long id) {
         return ApiResponse.builder()
                 .result("ok")
                 .msg("음식 정보가 삭제되었습니다")

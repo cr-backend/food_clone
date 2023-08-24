@@ -1,13 +1,11 @@
 package kr.co.cr.food.entity;
 
-import kr.co.cr.food.dto.diet.CreateDietRequest;
 import kr.co.cr.food.enums.MealTime;
-import kr.co.cr.food.enums.RecordType;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -16,7 +14,8 @@ import java.time.LocalDateTime;
 @Builder
 public class Diet {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,14 +48,14 @@ public class Diet {
 
 
     // 양방향 편의 메서드
-    public void changeMember(Member member){
+    public void changeMember(Member member) {
         this.member = member;
         member.getDiets().add(this);
     }
 
 
     // 식단 변경 메서드
-    public void updateDiet(Food food, Member member, Long count, LocalDate dietDate, MealTime mealTime){
+    public void updateDiet(Food food, Member member, Long count, LocalDate dietDate, MealTime mealTime) {
         this.food = food;
         this.member = member;
         this.count = count;
@@ -65,11 +64,10 @@ public class Diet {
     }
 
     // 총 칼로리, 탄수화물, 단백질, 지방 업데이트하는 메서드
-    public void updateKcal(){
+    public void updateKcal() {
         totalKcal = (long) (food.getKcal() * count);
         totalCarb = (long) (food.getCarbs() * count);
         totalPro = (long) (food.getProtein() * count);
         totalFat = (long) (food.getFat() * count);
     }
-
 }
