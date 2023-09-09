@@ -60,3 +60,12 @@ oauth2:
 
 jwt:
   secret: SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5cflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c
+
+oauth:
+  secret: HIU3z5KdxAYX4dmNWFxbGCzrG5DzCf1
+#  app-key: 45684b869b225c4ea5c773d0419d6584
+  api-key: 00bc98205fb1398ae66fa17556a3d66e
+  uri:
+    iss-uri: https://kauth.kakao.com
+    public-key-uri: https://kauth.kakao.com/.well-known/jwks.json
+
