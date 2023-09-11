@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 public class Food {
-    @Id
+    @Id @GeneratedValue
     private Long id;
     private String code;
     private String type;

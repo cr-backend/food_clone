@@ -1,7 +1,7 @@
 package kr.co.cr.food.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.cr.food.common.ApiResponse;
+import kr.co.cr.food.common.APIResponse;
 import kr.co.cr.food.dto.diet.CreateDietRequest;
 import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.service.DietService;
@@ -21,13 +21,13 @@ public class DietController {
     @Operation(summary = "식단 저장", description = "사용자가 요청한 식단(음식)을 저장합니다.", tags = {"Diet Controller"})
     @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
     @PostMapping
-    public ApiResponse saveDiet(@RequestBody @Validated CreateDietRequest createDietRequest, BindingResult bindingResult) {
+    public APIResponse saveDiet(@RequestBody @Validated CreateDietRequest createDietRequest, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new NullPointerException("입력 값에 NulL값이 들어감");
         }
 
-        return ApiResponse.builder()
+        return APIResponse.builder()
                 .result("ok")
                 .msg("입력된 음식이 저장되었습니다.")
                 .data(dietService.inputDiet(createDietRequest))
@@ -37,7 +37,7 @@ public class DietController {
     @Operation(summary = "식단 수정", description = "사용자가 요청한 식단(음식)을 수정합니다.", tags = {"Diet Controller"})
     @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
     @PatchMapping("/diet/{dietId}")
-    public ApiResponse modifiedDiet(@PathVariable("dietId") Long id,
+    public APIResponse modifiedDiet(@PathVariable("dietId") Long id,
                                     @RequestBody @Validated UpdateDietRequest updateDietRequest,
                                     BindingResult bindingResult) {
 
@@ -45,7 +45,7 @@ public class DietController {
             throw new NullPointerException("입력 값에 NulL값이 들어감");
         }
 
-        return ApiResponse.builder()
+        return APIResponse.builder()
                 .result("ok")
                 .msg("음식 정보가 수정되었습니다")
                 .data(dietService.updateDiet(id, updateDietRequest))
@@ -55,8 +55,8 @@ public class DietController {
     @Operation(summary = "식단 삭제", description = "사용자가 요청한 식단(음식)을 삭제합니다.", tags = {"Diet Controller"})
     @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
     @DeleteMapping("/diet/{dietId}")
-    public ApiResponse removeDiet(@PathVariable("dietId") Long id) {
-        return ApiResponse.builder()
+    public APIResponse removeDiet(@PathVariable("dietId") Long id) {
+        return APIResponse.builder()
                 .result("ok")
                 .msg("음식 정보가 삭제되었습니다")
                 .data(dietService.deleteDiet(id))

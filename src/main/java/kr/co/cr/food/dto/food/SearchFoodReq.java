@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class SearchFoodReq {
+  private Integer p;
   private String name;
 }

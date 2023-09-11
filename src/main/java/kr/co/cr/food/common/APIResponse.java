@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString
-public class ApiResponse {
+public class APIResponse<T> {
     private String result;
     private String msg;
     private Object data;
