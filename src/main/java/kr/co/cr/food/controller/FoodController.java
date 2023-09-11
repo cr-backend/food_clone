@@ -9,10 +9,8 @@ import kr.co.cr.food.dto.food.SearchFoodReq;
 import kr.co.cr.food.dto.food.SearchFoodRes;
 import kr.co.cr.food.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,8 +24,8 @@ public class FoodController extends BaseController {
     @Operation(summary = "음식 전체 조회 요청", description = "검색어를 포함한 음식의 전체 목록이 반환됩니다.")
     @ApiResponse(code = 200, message = "요청완료", response = SearchFoodRes.class)
     @GetMapping("/")
-    public APIResponse<List<SearchFoodRes>> getAll(SearchFoodReq searchFoodReq) {
-        List<SearchFoodRes> searchFoodRes = foodService.searchFoods(searchFoodReq);
+    public APIResponse<List<SearchFoodRes>> getAll(Pageable pageable, SearchFoodReq searchFoodReq) {
+        List<SearchFoodRes> searchFoodRes = foodService.searchFoods(pageable, searchFoodReq);
         return ok(searchFoodRes);
     }
 
@@ -38,5 +36,12 @@ public class FoodController extends BaseController {
     public APIResponse<FoodDetailRes> getDetail(@PathVariable Long id) {
         FoodDetailRes foodDetail = foodService.getFoodDetail(id);
         return ok(foodDetail);
+    }
+
+
+    @PatchMapping("/{id}/{type}")
+    public APIResponse<Boolean> voteForFood(@PathVariable Long id, @PathVariable String type) {
+        Boolean voteResult = foodService.vote(id, type);
+        return ok(voteResult);
     }
 }
