@@ -2,12 +2,16 @@ package kr.co.cr.food.service;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import kr.co.cr.food.dto.auth.AuthTokens;
+import kr.co.cr.food.dto.auth.OauthInfoResponse;
 import kr.co.cr.food.dto.auth.OauthMemberDto;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.exception.InternalServerErrorException;
 import kr.co.cr.food.exception.NotValidValueException;
 import kr.co.cr.food.repository.MemberRepository;
+import kr.co.cr.food.utils.AuthTokensGenerator;
 import kr.co.cr.food.utils.KakaoApiClient;
+import kr.co.cr.food.utils.OauthRequestParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.BasicJsonParser;
@@ -25,87 +29,63 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
     private final KakaoApiClient kakaoApiClient;
-//    private final AuthTokensGenerator authTokensGenerator;
+    private final AuthTokensGenerator authTokensGenerator;
 
-//    public AuthTokens login(OauthRequestParam params) {
-//        String accessToken = kakaoApiClient.requestAccessToken(params);
-//        OauthInfoResponse oauthInfoResponse = kakaoApiClient.requestOauthInfo(accessToken);
-//        Long memberId = findOrCreateMember(oauthInfoResponse);
-//        return authTokensGenerator.generate(memberId);
-//    }
-//
-//    private Long findOrCreateMember(OauthInfoResponse response) {
-//        return memberRepository.findByEmail(response.getEmail())
-//                .map(Member::getId)
-//                .orElseGet(() -> newMember(response));
-//
-//    }
+    public AuthTokens login(OauthRequestParam params) {
+        String accessToken = kakaoApiClient.requestAccessToken(params);
+        OauthInfoResponse oauthInfoResponse = kakaoApiClient.requestOauthInfo(accessToken);
+        Long memberId = findOrCreateMember(oauthInfoResponse);
+        return authTokensGenerator.generate(memberId);
+    }
 
-//    private Long newMember(OauthInfoResponse response) {
-//        Member member = Member.builder()
-//                .email(response.getEmail())
-//                .nickname(response.getNickname())
-//                .build();
-//
-//        Long savedId = memberRepository.save(member).getId();
-//
-//        if (savedId == null) {
-//            throw new InternalServerErrorException("회원 정보가 저장되지 않았습니다.");
-//        }
-//
-//        return memberRepository.save(member).getId();
-//    }
+    private Long findOrCreateMember(OauthInfoResponse response) {
+        return memberRepository.findByEmail(response.getEmail())
+                .map(Member::getId)
+                .orElseGet(() -> newMember(response));
 
-    public String validateToken(String request) {
-        /**
-         * parsing 후 header, payload, secret 분리하기
-         */
-        JsonParser jsonParser = new BasicJsonParser();
-        Map<String, Object> requestArray = jsonParser.parseMap(request);
-        log.info("request={}", requestArray.get("idToken"));
-        StringTokenizer st = new StringTokenizer(requestArray.get("idToken").toString(), ".");
-        String header = st.nextToken();
-        String payload = st.nextToken();
-//        String secret = st.nextToken();
+    }
 
-        /**
-         * payload 디코딩
-         */
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String decodedPayload = new String(decoder.decode(payload));
-        Map<String, Object> payloadArray = jsonParser.parseMap(decodedPayload);
+    private Long newMember(OauthInfoResponse response) {
+        Member member = Member.builder()
+                .email(response.getEmail())
+                .nickname(response.getNickname())
+                .build();
 
-        /**
-         * header 디코딩
-         */
-        String decodedHeader = new String(decoder.decode(header));
-        log.info("decodedHeader={}", decodedHeader);
-        Map<String, Object> headerArray = jsonParser.parseMap(decodedHeader);
+        Long savedId = memberRepository.save(member).getId();
 
-        String token = header + "." + payload + ".";
-
-        try {
-            Jwts.parserBuilder()
-                    .requireAudience(payloadArray.get("aud").toString())
-                    .requireIssuer(payloadArray.get("iss").toString())
-                    .build()
-                    .parseClaimsJwt(token);
-
-            kakaoApiClient.headerKidInfo(headerArray);
-
-        } catch (ExpiredJwtException e) { //파싱하면서 만료된 토큰인지 확인.
-            throw new NotValidValueException("만료된 토큰입니다.");
-        } catch (Exception e) {
-            log.error(e.toString());
-            throw new NotValidValueException("유효하지 않은 토큰 값입니다.");
+        if (savedId == null) {
+            throw new InternalServerErrorException("회원 정보가 저장되지 않았습니다.");
         }
 
+        return memberRepository.save(member).getId();
+    }
+
+    public Long validateToken(String request) {
+
+        Map<String, String> requestInfo = kakaoApiClient.requestInfo(request);
+        String payload = requestInfo.get("payload");
+        String header = requestInfo.get("header");
+
+        // 페이로더 디코딩
+        Map<String, Object> payloadArray = kakaoApiClient.decodedPayload(payload);
+
+        // 헤더 디코딩
+        Map<String, Object> headerArray = kakaoApiClient.decodedHeader(header);
+
+        // aud, iss, exp 검증
+        String token = header + "." + payload + ".";
+        kakaoApiClient.validateToken(token, payloadArray, headerArray);
+
+        /**
+         * secret 검증 필요!!
+         */
+
+        // 로그인
         String email = payloadArray.get("email").toString();
         String nickname = payloadArray.get("nickname").toString();
         OauthMemberDto dto = new OauthMemberDto(email, nickname);
-        findOrCreateMember(dto);
 
-        return "ok";
+        return findOrCreateMember(dto);
     }
 
     private Long findOrCreateMember(OauthMemberDto dto) {
