@@ -1,5 +1,6 @@
 package kr.co.cr.food.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import kr.co.cr.food.dto.auth.AuthTokens;
@@ -62,6 +63,7 @@ public class AuthService {
 
     public Long validateToken(String request) {
 
+        // parsing
         Map<String, String> requestInfo = kakaoApiClient.requestInfo(request);
         String payload = requestInfo.get("payload");
         String header = requestInfo.get("header");
@@ -76,13 +78,12 @@ public class AuthService {
         String token = header + "." + payload + ".";
         kakaoApiClient.validateToken(token, payloadArray, headerArray);
 
-        /**
-         * secret 검증 필요!!
-         */
+        // kid, signature 검증
+        Claims claims = kakaoApiClient.headerKidInfo(headerArray, requestInfo.get("request"));
 
         // 로그인
-        String email = payloadArray.get("email").toString();
-        String nickname = payloadArray.get("nickname").toString();
+        String email = claims.get("email", String.class);
+        String nickname = claims.get("nickname", String.class);
         OauthMemberDto dto = new OauthMemberDto(email, nickname);
 
         return findOrCreateMember(dto);
