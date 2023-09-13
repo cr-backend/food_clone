@@ -1,5 +1,6 @@
 package kr.co.cr.food.controller;
 
+import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.cr.food.common.APIResponse;
 import kr.co.cr.food.dto.diet.CreateDietRequest;
@@ -19,7 +20,7 @@ public class DietController {
 
     // 저장, 수정, 삭제
     @Operation(summary = "식단 저장", description = "사용자가 요청한 식단(음식)을 저장합니다.", tags = {"Diet Controller"})
-    @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
+    @ApiResponse(code = 200, message = "요청완료")
     @PostMapping
     public APIResponse saveDiet(@RequestBody @Validated CreateDietRequest createDietRequest, BindingResult bindingResult) {
 
@@ -35,7 +36,7 @@ public class DietController {
     }
 
     @Operation(summary = "식단 수정", description = "사용자가 요청한 식단(음식)을 수정합니다.", tags = {"Diet Controller"})
-    @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
+    @ApiResponse(code = 200, message = "요청완료")
     @PatchMapping("/diet/{dietId}")
     public APIResponse modifiedDiet(@PathVariable("dietId") Long id,
                                     @RequestBody @Validated UpdateDietRequest updateDietRequest,
@@ -53,7 +54,7 @@ public class DietController {
     }
 
     @Operation(summary = "식단 삭제", description = "사용자가 요청한 식단(음식)을 삭제합니다.", tags = {"Diet Controller"})
-    @io.swagger.annotations.ApiResponse(code = 200, message = "요청완료")
+    @ApiResponse(code = 200, message = "요청완료")
     @DeleteMapping("/diet/{dietId}")
     public APIResponse removeDiet(@PathVariable("dietId") Long id) {
         return APIResponse.builder()

@@ -1,6 +1,8 @@
 package kr.co.cr.food.utils;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import kr.co.cr.food.dto.auth.OauthInfoResponse;
 import kr.co.cr.food.dto.auth.OauthTokens;
@@ -20,6 +22,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigInteger;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.*;
 
 @Component
@@ -91,33 +99,21 @@ public class KakaoApiClient {
     /**
      * 사용하는 메소드
      */
-    public void headerKidInfo(Map<String, Object> header) {
-
-        String kid = header.get("kid").toString();
-
-        PublicKeyResponse keyResponse = restTemplate.getForObject(keyUrl, PublicKeyResponse.class);
-
-        keyResponse.getKeys().stream()
-                .filter(o -> o.getKid().equals(kid))
-                .findFirst()
-                .orElseThrow(() -> new NotValidValueException("유효하지 않은 kid 값입니다."));
-    }
 
 
     /**
      * parsing 후 header, payload, secret 분리하기
      */
     public Map<String, String> requestInfo(String request){
-//        JsonParser jsonParser = new BasicJsonParser();
         Map<String, Object> requestArray = jsonParser.parseMap(request);
         log.info("request={}", requestArray.get("idToken"));
         StringTokenizer st = new StringTokenizer(requestArray.get("idToken").toString(), ".");
 
         Map<String, String> requestInfo = new HashMap<>();
 
+        requestInfo.put("request", requestArray.get("idToken").toString());
         requestInfo.put("header", st.nextToken());
         requestInfo.put("payload", st.nextToken());
-        requestInfo.put("secret", st.nextToken());
 
         return requestInfo;
     }
@@ -126,7 +122,6 @@ public class KakaoApiClient {
      * payload 디코딩
      */
     public Map<String, Object> decodedPayload(String payload){
-//        Base64.Decoder decoder = Base64.getUrlDecoder();
         String decodedPayload = new String(decoder.decode(payload));
         Map<String, Object> payloadArray = jsonParser.parseMap(decodedPayload);
         return payloadArray;
@@ -153,8 +148,6 @@ public class KakaoApiClient {
                     .build()
                     .parseClaimsJwt(token);
 
-            headerKidInfo(header);
-
         } catch (ExpiredJwtException e) { //파싱하면서 만료된 토큰인지 확인.
             throw new NotValidValueException("만료된 토큰입니다.");
         } catch (Exception e) {
@@ -163,6 +156,61 @@ public class KakaoApiClient {
         }
 
     }
+
+    /**
+     * header 공개키 목록 조회
+     */
+    public Claims headerKidInfo(Map<String, Object> header, String token) {
+
+        String kid = header.get("kid").toString();
+
+        PublicKeyResponse keyResponse = restTemplate.getForObject(keyUrl, PublicKeyResponse.class);
+
+        PublicKeyResponse.Keys keys = keyResponse.getKeys().stream()
+                .filter(o -> o.getKid().equals(kid))
+                .findFirst()
+                .orElseThrow(() -> new NotValidValueException("유효하지 않은 kid 값입니다."));
+
+        log.info("keys.e={}",keys.getE());
+        log.info("keys.n={}",keys.getN());
+
+        return validateKey(token, keys.getN(), keys.getE()).getBody();
+    }
+
+    /**
+     * signature 값 검증
+     * @return payload 값
+     */
+    private Jws<Claims> validateKey(String token, String modulus, String exponent){
+        try{
+            return Jwts.parserBuilder()
+                    .setSigningKey(getRSAPublicKey(modulus, exponent))
+                    .build()
+                    .parseClaimsJws(token);
+
+        }catch (ExpiredJwtException e){
+            throw new NotValidValueException("토큰이 만료되었습니다.");
+        }catch (Exception e){
+            throw new NotValidValueException("유효하지 않은 키 값입니다.");
+        }
+    }
+
+    /**
+     * RSA 키 생성
+     */
+    private Key getRSAPublicKey(String modulus, String exponent)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        byte[] decodeN = decoder.decode(modulus);
+        byte[] decodeE = decoder.decode(exponent);
+        BigInteger n = new BigInteger(1, decodeN);
+        BigInteger e = new BigInteger(1, decodeE);
+
+        RSAPublicKeySpec keySpec = new RSAPublicKeySpec(n, e);
+        return keyFactory.generatePublic(keySpec);
+
+    }
+
 
 
 }

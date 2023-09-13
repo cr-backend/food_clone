@@ -36,8 +36,8 @@ class DietServiceTest {
         Food savedFood = getFood();
 
         CreateDietRequest request = new CreateDietRequest();
-        request.setMember(savedMember);
-        request.setFood(savedFood);
+        request.setMemberId(savedMember.getId());
+        request.setFoodId(savedFood.getId());
         request.setDietDate(LocalDate.of(2023,8, 8));
         request.setCount(1L);
         request.setMealTime(MealTime.LUNCH);
@@ -51,7 +51,7 @@ class DietServiceTest {
         Food savedFood = getFood();
 
         UpdateDietRequest request = new UpdateDietRequest();
-        request.setFood(savedFood);
+        request.setFoodId(savedFood.getId());
         request.setCount(5L);
         request.setMealTime(MealTime.BREAKFAST);
 
