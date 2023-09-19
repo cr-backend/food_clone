@@ -1,27 +1,20 @@
 package kr.co.cr.food.service;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import kr.co.cr.food.dto.auth.AuthTokens;
 import kr.co.cr.food.dto.auth.OauthInfoResponse;
 import kr.co.cr.food.dto.auth.OauthMemberDto;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.exception.InternalServerErrorException;
-import kr.co.cr.food.exception.NotValidValueException;
 import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.utils.AuthTokensGenerator;
 import kr.co.cr.food.utils.KakaoApiClient;
 import kr.co.cr.food.utils.OauthRequestParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.json.BasicJsonParser;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +69,7 @@ public class AuthService {
 
         // aud, iss, exp 검증
         String token = header + "." + payload + ".";
-        kakaoApiClient.validateToken(token, payloadArray, headerArray);
+        kakaoApiClient.validateToken(token, payloadArray);
 
         // kid, signature 검증
         Claims claims = kakaoApiClient.headerKidInfo(headerArray, requestInfo.get("request"));

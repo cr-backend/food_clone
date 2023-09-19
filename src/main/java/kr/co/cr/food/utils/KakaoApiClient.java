@@ -140,7 +140,7 @@ public class KakaoApiClient {
     /**
      * aud, iss, exp 검증
      */
-    public void validateToken(String token, Map<String, Object> payload, Map<String, Object> header){
+    public void validateToken(String token, Map<String, Object> payload){
         try {
             Jwts.parserBuilder()
                     .requireAudience(payload.get("aud").toString())
