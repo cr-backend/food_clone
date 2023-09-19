@@ -22,7 +22,7 @@ spring:
 #        show_sql: true
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       dialect: org.hibernate.dialect.H2Dialect
     database: h2
   mvc:
