@@ -1,5 +1,6 @@
 package kr.co.cr.food.service;
 
+import kr.co.cr.food.dto.common.PagingResponse;
 import kr.co.cr.food.dto.food.FoodDetailRes;
 import kr.co.cr.food.dto.food.SearchFoodReq;
 import kr.co.cr.food.dto.food.SearchFoodRes;
@@ -9,14 +10,17 @@ import kr.co.cr.food.exception.FoodException;
 import kr.co.cr.food.exception.errorcodes.ErrorCode;
 import kr.co.cr.food.repository.FoodRepository;
 import kr.co.cr.food.repository.VoteRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
+@Slf4j
 @Service
 public class FoodService {
 
@@ -25,11 +29,15 @@ public class FoodService {
   @Autowired
   VoteRepository voteRepository;
 
-  public List<SearchFoodRes> searchFoods(Pageable pageable, SearchFoodReq searchFoodReq) {
-    Page<Food> byNameOrderByIdDesc = foodRepository.findByNameContainsOrderByIdDesc(searchFoodReq.getName(), pageable);
-    return byNameOrderByIdDesc.stream()
+  public PagingResponse<SearchFoodRes> searchFoods(@PageableDefault(sort = "id") Pageable pageable, SearchFoodReq searchFoodReq) {
+    log.debug("[::searchFoods] search food request : {}", searchFoodReq.getName());
+    Page<Food> byNameOrderByIdDesc = foodRepository.findByNameContainsOrderByIdDesc(Objects.requireNonNullElse(searchFoodReq.getName(), ""), pageable);
+    log.debug("[::searchFoods] food size : {}", byNameOrderByIdDesc.stream().count());
+    List<SearchFoodRes> collect = byNameOrderByIdDesc.stream()
           .map(SearchFoodRes::toDto)
-          .collect(Collectors.toList());
+          .toList();
+
+    return PagingResponse.create(byNameOrderByIdDesc, collect);
   }
 
   public FoodDetailRes getFoodDetail(Long id) {

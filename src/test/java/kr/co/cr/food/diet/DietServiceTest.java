@@ -5,9 +5,8 @@ import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.entity.Food;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.enums.MealTime;
-import kr.co.cr.food.enums.RecordType;
-import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.repository.FoodRepository;
+import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.service.DietService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @SpringBootTest
 class DietServiceTest {
@@ -36,8 +34,8 @@ class DietServiceTest {
         Food savedFood = getFood();
 
         CreateDietRequest request = new CreateDietRequest();
-        request.setMember(savedMember);
-        request.setFood(savedFood);
+//        request.setMember(savedMember);
+//        request.setFood(savedFood);
         request.setDietDate(LocalDate.of(2023,8, 8));
         request.setCount(1L);
         request.setMealTime(MealTime.LUNCH);
@@ -51,7 +49,7 @@ class DietServiceTest {
         Food savedFood = getFood();
 
         UpdateDietRequest request = new UpdateDietRequest();
-        request.setFood(savedFood);
+//        request.setFood(savedFood);
         request.setCount(5L);
         request.setMealTime(MealTime.BREAKFAST);
 

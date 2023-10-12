@@ -33,6 +33,10 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 
+	// log
+	implementation("ch.qos.logback:logback-classic:1.2.6")
+	implementation("org.slf4j:jcl-over-slf4j:1.7.5")
+
 	// swagger
 	implementation("io.springfox:springfox-boot-starter:3.0.0")
 	implementation("io.springfox:springfox-swagger-ui:3.0.0")

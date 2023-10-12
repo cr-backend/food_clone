@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.cr.food.common.APIResponse;
 import kr.co.cr.food.common.BaseController;
+import kr.co.cr.food.dto.common.PagingResponse;
 import kr.co.cr.food.dto.food.FoodDetailRes;
 import kr.co.cr.food.dto.food.SearchFoodReq;
 import kr.co.cr.food.dto.food.SearchFoodRes;
@@ -12,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(value = "/api/v1/food", produces = "application/json; charser=utf-8")
+@RequestMapping(value = "/food", produces = "application/json; charset=utf-8")
 public class FoodController extends BaseController {
 
     @Autowired
@@ -24,8 +23,8 @@ public class FoodController extends BaseController {
     @Operation(summary = "음식 전체 조회 요청", description = "검색어를 포함한 음식의 전체 목록이 반환됩니다.")
     @ApiResponse(code = 200, message = "요청완료", response = SearchFoodRes.class)
     @GetMapping("/")
-    public APIResponse<List<SearchFoodRes>> getAll(Pageable pageable, SearchFoodReq searchFoodReq) {
-        List<SearchFoodRes> searchFoodRes = foodService.searchFoods(pageable, searchFoodReq);
+    public APIResponse<PagingResponse<SearchFoodRes>> getAll(Pageable pageable, SearchFoodReq searchFoodReq) {
+        PagingResponse<SearchFoodRes> searchFoodRes = foodService.searchFoods(pageable, searchFoodReq);
         return ok(searchFoodRes);
     }
 

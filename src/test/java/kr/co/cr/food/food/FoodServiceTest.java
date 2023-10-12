@@ -1,5 +1,6 @@
 package kr.co.cr.food.food;
 
+import kr.co.cr.food.dto.common.PagingResponse;
 import kr.co.cr.food.dto.food.FoodDetailRes;
 import kr.co.cr.food.dto.food.SearchFoodReq;
 import kr.co.cr.food.dto.food.SearchFoodRes;
@@ -14,8 +15,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,11 +71,11 @@ class FoodServiceTest {
     void getAll() {
         SearchFoodReq searchFoodReq = new SearchFoodReq();
         searchFoodReq.setName("테스트");
-        List<SearchFoodRes> searchFoodRes = foodService.searchFoods(Pageable.ofSize(10).first(), searchFoodReq);
+        PagingResponse<SearchFoodRes> searchFoodRes = foodService.searchFoods(Pageable.ofSize(10).first(), searchFoodReq);
 
-        System.out.println("size : " + searchFoodRes.size());
-        assertThat(searchFoodRes.size()).isEqualTo(1);
-        searchFoodRes.forEach(f -> {
+        System.out.println("page : " + searchFoodRes.getMetaData().getPage());
+        assertThat(searchFoodRes.getData().size()).isEqualTo(1);
+        searchFoodRes.getData().forEach(f -> {
             System.out.println(f.toString());
         });
     }

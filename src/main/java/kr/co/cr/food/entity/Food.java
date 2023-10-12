@@ -2,10 +2,7 @@ package kr.co.cr.food.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -16,6 +13,7 @@ import javax.persistence.Id;
 public class Food {
     @Id @GeneratedValue
     private Long id;
+    @Column(unique = true)
     private String code;
     private String type;
     private String name;
