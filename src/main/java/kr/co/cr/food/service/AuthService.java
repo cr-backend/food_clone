@@ -6,6 +6,7 @@ import kr.co.cr.food.dto.auth.OauthInfoResponse;
 import kr.co.cr.food.dto.auth.OauthMemberDto;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.exception.InternalServerErrorException;
+import kr.co.cr.food.exception.NotValidValueException;
 import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.utils.AuthTokensGenerator;
 import kr.co.cr.food.utils.KakaoApiClient;
@@ -14,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +57,7 @@ public class AuthService {
         return memberRepository.save(member).getId();
     }
 
-    public Long validateToken(String request) {
+    public Map<String, Object> validateToken(String request) {
 
         // parsing
         Map<String, String> requestInfo = kakaoApiClient.requestInfo(request);
@@ -79,14 +82,24 @@ public class AuthService {
         String nickname = claims.get("nickname", String.class);
         OauthMemberDto dto = new OauthMemberDto(email, nickname);
 
-        return findOrCreateMember(dto);
+        // db 존재: 정보 찾기
+        // db 미존재: 저장하기
+        Long memberId = findOrCreateMember(dto);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotValidValueException("회원 정보 없음"));
+
+        // response 값: 아이디, 닉네임
+        Map<String, Object> result = new HashMap<>();
+        result.put("memberId", member.getId());
+        result.put("nickName", member.getNickname());
+
+        return result;
     }
 
     private Long findOrCreateMember(OauthMemberDto dto) {
         return memberRepository.findByEmail(dto.getEmail())
                 .map(Member::getId)
                 .orElseGet(() -> newMember(dto));
-
     }
 
     private Long newMember(OauthMemberDto dto) {

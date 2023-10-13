@@ -2,6 +2,7 @@ package kr.co.cr.food.controller;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.cr.food.common.APIResponse;
 import kr.co.cr.food.dto.auth.AuthTokens;
 import kr.co.cr.food.service.AuthService;
 import kr.co.cr.food.utils.OauthRequestParam;
@@ -29,8 +30,13 @@ public class AuthController {
     @Operation(summary = "카카오 로그인", description = "idToken을 요청 받아 검증 후 사용자를 db에 저장합니다.", tags = {"Auth Controller"})
     @ApiResponse(code = 200, message = "요청완료")
     @PostMapping("/token")
-    public ResponseEntity<Long> loginKakao(@RequestBody String idToken) {
-        return ResponseEntity.ok(authService.validateToken(idToken));
+    public APIResponse loginKakao(@RequestBody String idToken) {
+        // return ResponseEntity.ok(authService.validateToken(idToken));
+        return APIResponse.builder()
+                .result("ok")
+                .msg("로그인 되었습니다.")
+                .data(authService.validateToken(idToken))
+                .build();
     }
 
 }
