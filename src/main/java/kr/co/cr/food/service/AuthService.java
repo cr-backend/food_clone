@@ -6,7 +6,7 @@ import kr.co.cr.food.dto.auth.OauthInfoResponse;
 import kr.co.cr.food.dto.auth.OauthMemberDto;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.exception.InternalServerErrorException;
-import kr.co.cr.food.exception.NotValidValueException;
+import kr.co.cr.food.exception.NotFoundException;
 import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.utils.AuthTokensGenerator;
 import kr.co.cr.food.utils.KakaoApiClient;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +85,7 @@ public class AuthService {
         // db 미존재: 저장하기
         Long memberId = findOrCreateMember(dto);
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotValidValueException("회원 정보 없음"));
+                .orElseThrow(() -> new NotFoundException("회원 정보 없음"));
 
         // response 값: 아이디, 닉네임
         Map<String, Object> result = new HashMap<>();
