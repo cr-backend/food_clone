@@ -4,7 +4,7 @@ import kr.co.cr.food.dto.water.CreateWaterRequest;
 import kr.co.cr.food.dto.water.UpdateWaterRequest;
 import kr.co.cr.food.entity.Member;
 import kr.co.cr.food.entity.Water;
-import kr.co.cr.food.exception.IllegalArgumentException;
+import kr.co.cr.food.exception.NotFoundException;
 import kr.co.cr.food.repository.MemberRepository;
 import kr.co.cr.food.repository.WaterRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class WaterService {
     public Long insert(CreateWaterRequest createWaterRequest){
         // member 아이디 찾기
         Member member = memberRepository.findById(createWaterRequest.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
         // request -> entity
         Water water = toEntity(createWaterRequest, member);

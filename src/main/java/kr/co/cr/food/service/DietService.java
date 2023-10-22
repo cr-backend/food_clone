@@ -5,7 +5,7 @@ import kr.co.cr.food.dto.diet.UpdateDietRequest;
 import kr.co.cr.food.entity.Diet;
 import kr.co.cr.food.entity.Food;
 import kr.co.cr.food.entity.Member;
-import kr.co.cr.food.exception.IllegalArgumentException;
+import kr.co.cr.food.exception.NotFoundException;
 import kr.co.cr.food.exception.InternalServerErrorException;
 import kr.co.cr.food.repository.DietRepository;
 import kr.co.cr.food.repository.FoodRepository;
@@ -25,11 +25,11 @@ public class DietService {
     public Long inputDiet(CreateDietRequest createDietRequest) {
         // member 아이디 찾기
         Member member = memberRepository.findById(createDietRequest.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
         // food 아이디 찾기
         Food food = foodRepository.findById(createDietRequest.getFoodId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 음식을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 음식을 찾을 수 없습니다."));
 
         // dto -> entity
         Diet diet = toEntity(createDietRequest, member, food);
@@ -61,11 +61,11 @@ public class DietService {
     public void update(Long id, UpdateDietRequest request) {
         // member 아이디 찾기
         Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
         // food 아이디 찾기
         Food food = foodRepository.findById(request.getFoodId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 음식을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 음식을 찾을 수 없습니다."));
 
         // 식단 찾기
         Diet diet = dietRepository.findById(id)

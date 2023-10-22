@@ -7,8 +7,8 @@ import io.jsonwebtoken.Jwts;
 import kr.co.cr.food.dto.auth.OauthInfoResponse;
 import kr.co.cr.food.dto.auth.OauthTokens;
 import kr.co.cr.food.dto.auth.PublicKeyResponse;
-import kr.co.cr.food.exception.HttpClientErrorException;
-import kr.co.cr.food.exception.NotValidValueException;
+import kr.co.cr.food.exception.OauthErrorException;
+import kr.co.cr.food.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,13 +68,13 @@ public class KakaoApiClient {
         HttpEntity request = new HttpEntity(body, httpHeaders);
 
         if (request == null)
-            throw new HttpClientErrorException("Kakao 토큰을 요청할 수 없습니다.");
+            throw new OauthErrorException("Kakao 토큰을 요청할 수 없습니다.");
 
         OauthTokens response = restTemplate.postForObject(tokenUrl, request, OauthTokens.class);
         log.info("idToken ={}", response.getIdToken());
 
         if (response == null)
-            throw new HttpClientErrorException("Kakao 토큰을 발급 받을 수 없습니다.");
+            throw new OauthErrorException("Kakao 토큰을 발급 받을 수 없습니다.");
 
         return response.getAccessToken();
     }
@@ -90,7 +90,7 @@ public class KakaoApiClient {
         HttpEntity request = new HttpEntity(body, httpHeaders);
 
         if (request == null)
-            throw new HttpClientErrorException("사용자 정보를 Kakao Auth Server로부터 요청할 수 없습니다.");
+            throw new OauthErrorException("사용자 정보를 Kakao Auth Server로부터 요청할 수 없습니다.");
 
         OauthInfoResponse response = restTemplate.postForObject(userInfoUrl, request, OauthInfoResponse.class);
         return response;
@@ -149,10 +149,10 @@ public class KakaoApiClient {
                     .parseClaimsJwt(token);
 
         } catch (ExpiredJwtException e) { //파싱하면서 만료된 토큰인지 확인.
-            throw new NotValidValueException("만료된 토큰입니다.");
+            throw new NotFoundException("만료된 토큰입니다.");
         } catch (Exception e) {
             log.error(e.toString());
-            throw new NotValidValueException("유효하지 않은 토큰 값입니다.");
+            throw new NotFoundException("유효하지 않은 토큰 값입니다.");
         }
 
     }
@@ -169,7 +169,7 @@ public class KakaoApiClient {
         PublicKeyResponse.Keys keys = keyResponse.getKeys().stream()
                 .filter(o -> o.getKid().equals(kid))
                 .findFirst()
-                .orElseThrow(() -> new NotValidValueException("유효하지 않은 kid 값입니다."));
+                .orElseThrow(() -> new NotFoundException("유효하지 않은 kid 값입니다."));
 
         log.info("keys.e={}",keys.getE());
         log.info("keys.n={}",keys.getN());
@@ -189,9 +189,9 @@ public class KakaoApiClient {
                     .parseClaimsJws(token);
 
         }catch (ExpiredJwtException e){
-            throw new NotValidValueException("토큰이 만료되었습니다.");
+            throw new NotFoundException("토큰이 만료되었습니다.");
         }catch (Exception e){
-            throw new NotValidValueException("유효하지 않은 키 값입니다.");
+            throw new NotFoundException("유효하지 않은 키 값입니다.");
         }
     }
 

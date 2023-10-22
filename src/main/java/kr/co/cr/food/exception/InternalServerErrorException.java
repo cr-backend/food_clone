@@ -1,9 +1,23 @@
 package kr.co.cr.food.exception;
 
-import org.springframework.http.HttpStatus;
+public class InternalServerErrorException extends RuntimeException {
+    public InternalServerErrorException() {
+        super();
+    }
 
-public class InternalServerErrorException extends FoodException{
     public InternalServerErrorException(String message) {
-        super(message, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        super(message);
+    }
+
+    public InternalServerErrorException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InternalServerErrorException(Throwable cause) {
+        super(cause);
+    }
+
+    protected InternalServerErrorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }
