@@ -28,7 +28,12 @@ public class VotesForFoodDto {
     if (this.likeCnt == null) this.likeCnt = 0;
     if (this.badCnt == null) this.badCnt = 0;
 
-    int totalCnt = likeCnt + badCnt;
-    return null;
+    if (this.likeCnt > this.badCnt) {
+      return VoteAvgType.GOOD;
+    } else if (this.likeCnt < this.badCnt) {
+      return VoteAvgType.BAD;
+    } else {
+      return VoteAvgType.SOSO;
+    }
   }
 }

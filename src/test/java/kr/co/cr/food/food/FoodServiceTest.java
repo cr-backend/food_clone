@@ -51,7 +51,7 @@ class FoodServiceTest {
 
     @Test
     void vote() {
-        foodService.vote(1L, "LIKE");
+        foodService.vote(1L, "LIKE", 1L);
 
         Vote vote = voteRepository.findById(1L).orElseThrow();
         assertThat(vote.getLikeCount()).isEqualTo(1);
@@ -61,7 +61,7 @@ class FoodServiceTest {
 
     @Test
     void getDetail() {
-        FoodDetailRes foodDetail = foodService.getFoodDetail(1L);
+        FoodDetailRes foodDetail = foodService.getFoodDetail(1L, 1L);
 
         System.out.println(foodDetail.toString());
         assertThat(foodDetail.getId()).isEqualTo(1L);

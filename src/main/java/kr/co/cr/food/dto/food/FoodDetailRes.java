@@ -1,6 +1,7 @@
 package kr.co.cr.food.dto.food;
 
 import kr.co.cr.food.entity.Food;
+import kr.co.cr.food.entity.MemberVoteInfo;
 import kr.co.cr.food.entity.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +20,9 @@ public class FoodDetailRes {
   private Double servingSize;
   private String servingUnit;
   private VotesForFoodDto voteInfo;
+  private Boolean isVoted;
 
-  public FoodDetailRes(Food food, Vote vote) {
+  public FoodDetailRes(Food food, Vote vote, MemberVoteInfo memberVoteInfo) {
     this.id = food.getId();
     this.name = food.getName();
     this.carb = food.getCarbs();
@@ -30,5 +32,6 @@ public class FoodDetailRes {
     this.servingSize = food.getServingSize();
     this.servingUnit = food.getUnit();
     this.voteInfo = new VotesForFoodDto(vote);
+    this.isVoted = memberVoteInfo != null;
   }
 }

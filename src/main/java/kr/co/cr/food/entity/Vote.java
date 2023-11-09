@@ -33,6 +33,16 @@ public class Vote {
         }
     }
 
+    public void devote(String type) {
+        if (type == null) return;
+
+        if (type.equalsIgnoreCase("LIKE")) {
+            this.badCount --;
+        } else {
+            this.likeCount --;
+        }
+    }
+
 
     private void like() {
         ++ this.likeCount;
